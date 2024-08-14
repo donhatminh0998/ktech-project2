@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>[[${article.title}]]</title>
+</head>
+<body>
+<h1>[[${article.title}]]</h1>
+<a href="/articles">Back to Articles</a><br>
+<a th:href="@{/articles/{id}/update (id=${article.id})}">Update</a>
+<!--<a th:href="@{/articles/{id} (id=${prevArticle.id})}" th:if="${prevArticle != null">Previous</a>-->
+<!--<a th:href="@{/articles/{id} (id=${nextArticle.id})}" th:if="${nextArticle != null">Next</a>-->
+<form th:action="@{/articles/{id}/delete (id=${article.id})}" method="post">
+    <label for="password-input">Password</label>
+    <input type="text" name="password" id="password-input">
+    <input type="submit" value="Delete">
+</form>
+<hr>
+Content:
+<p>[[${article.content}]]</p>
+<hr>
+<h2>Comments</h2>
+<form th:action="@{/articles/{id}/comments/create (id=${article.id})}" method="post">
+    <div>
+        <label for="comment-input">Comment:</label>
+        <input type="text" id="comment-input" name="content">
+        <br>
+        <label for="comment-password-input">Password</label>
+        <input type="text" id ="comment-password-input" name = "commentPassword">
+    </div>
+    <input type="submit" value="Write Comment">
+</form>
+
+<div th:if="${article.comments.isEmpty()}">
+    <p>No Comments</p>
+</div>
+<div
+        th:unless="${article.comments.isEmpty()}"
+        th:each="comment: ${article.comments}"
+>
+    <p>[[${comment.password}]]: [[${comment.content}]]</p>
+</div>
+</body>
+</html>
